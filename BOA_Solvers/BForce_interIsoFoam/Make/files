@@ -1,0 +1,3 @@
+BForce_interIsoFoam.C
+
+EXE = $(FOAM_APPBIN)/BForce_interIsoFoam

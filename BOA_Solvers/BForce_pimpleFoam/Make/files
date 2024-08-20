@@ -1,0 +1,3 @@
+BForce_pimpleFoam.C
+
+EXE = $(FOAM_APPBIN)/BForce_pimpleFoam
