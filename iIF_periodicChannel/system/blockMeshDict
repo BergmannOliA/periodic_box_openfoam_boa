@@ -1,0 +1,116 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale   0.01124;
+// L:length, H:height, W:width
+L       12.0;
+H       1.0;
+H2      #eval{ 2*$H };
+W       6.0;
+// N:n factor of mesh
+N       2;
+vertices
+(
+    ( 0 0  0)
+    ($L 0  0)
+    ($L $W 0)
+    ( 0 $W 0)
+
+    ( 0 0  $H )
+    ($L 0  $H )
+    ($L $W $H )
+    ( 0 $W $H )
+
+    ( 0 0  $H2 )
+    ($L 0  $H2 )
+    ($L $W $H2 )
+    ( 0 $W $H2 )
+);
+
+blocks
+(
+    hex ( 0  1  2  3  4  5  6   7  ) (#eval{ 16*$N } #eval{ 8*$N } #eval{ 4*$N }) simpleGrading (1 1  10.7028)
+    hex ( 4  5  6  7  8  9  10  11 ) (#eval{ 16*$N } #eval{ 8*$N } #eval{ 4*$N }) simpleGrading (1 1 -10.7028)
+);
+
+boundary
+(
+    bottomWall
+    {
+        type            wall;
+        faces           ((0 1 2 3));
+    }
+    topWall
+    {
+        type            wall;
+        faces           ((8 9 10 11));
+    }
+
+    sides1_half0
+    {
+        type            cyclic;
+        neighbourPatch  sides1_half1;
+        faces           ((0 1 5 4));
+    }
+    sides1_half1
+    {
+        type            cyclic;
+        neighbourPatch  sides1_half0;
+        faces           ((3 2 6 7));
+    }
+
+    sides2_half0
+    {
+        type            cyclic;
+        neighbourPatch  sides2_half1;
+        faces           ((4 5 9 8));
+    }
+    sides2_half1
+    {
+        type            cyclic;
+        neighbourPatch  sides2_half0;
+        faces           ((7 6 10 11));
+    }
+
+    inout1_half0
+    {
+        type            cyclic;
+        neighbourPatch  inout1_half1;
+        faces           ((0 4 7 3));
+    }
+    inout1_half1
+    {
+        type            cyclic;
+        neighbourPatch  inout1_half0;
+        faces           ((1 5 6 2));
+    }
+
+    inout2_half0
+    {
+        type            cyclic;
+        neighbourPatch  inout2_half1;
+        faces           ((4 8 11 7));
+    }
+    inout2_half1
+    {
+        type            cyclic;
+        neighbourPatch  inout2_half0;
+        faces           ((5 9 10 6));
+    }
+);
+
+
+// ************************************************************************* //
