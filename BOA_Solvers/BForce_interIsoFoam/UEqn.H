@@ -7,7 +7,7 @@
       + turbulence->divDevRhoReff(rho, U)
      ==
         fvOptions(rho, U)
-      + (bodyForce / rho)
+      + (bodyForce)
     );
 
     #include "UEqnAddPorosity.H"
